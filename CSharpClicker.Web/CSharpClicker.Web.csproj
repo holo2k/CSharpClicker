@@ -12,8 +12,12 @@
     <Folder Include="UseCases\" />
     <Folder Include="Infrastructure.Abstractions\" />
     <Folder Include="Infrastructure.Implementations\" />
-    <Folder Include="Infrastructure.DataAccessLayer\" />
-    <Folder Include="Domain\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.8" />
+    <PackageReference Include="SQLite" Version="3.13.0" />
   </ItemGroup>
 
 </Project>
