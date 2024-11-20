@@ -7,6 +7,6 @@ namespace CSharpClicker.Web.Domain
         public long CurrentScore { get; set; }
         public long RecordScore { get; set; }
 
-        public IEnumerable<UserBoost> UserBoosts { get; set; } = Enumerable.Empty<UserBoost>();
+        public ICollection<UserBoost> UserBoosts { get; set; } = [];
     }
 }

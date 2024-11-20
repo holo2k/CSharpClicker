@@ -1,0 +1,18 @@
+﻿@model AuthViewModel
+<body class="body bg-secondary bg-gradient">
+    <div class="d-flex flex-column justify-content-center align-items-center vh-100 ">
+    <div class="bg-light p-5 rounded border-radius-30">
+        <form class="d-flex flex-column justify-content-center align-items-center" asp-action="Login" asp-controller="Auth" method="post">
+            <h4 >Войти в аккаунт</h4>
+            <label >Имя пользователя</label>
+            <input class="mx-auto m-2" type="text" maxlength="30" asp-for="@Model.UserName"></input>
+            <label class="">Пароль</label>
+                <input class="mx-auto m-2" type="password" maxlength="30" asp-for="@Model.Password"></input>
+            <input class="btn btn-primary col" type="submit" value="Войти в аккаунт" />
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </form>
+        <a class="mx-auto" asp-action="Register" asp-controller="Auth">Зарегистрироваться</a>
+    </div>
+    </div>
+</body>
+

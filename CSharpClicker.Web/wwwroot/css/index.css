@@ -1,2 +1,7 @@
-﻿body {
+﻿﻿#clickitem:active {
+    opacity: 0.7;
+}
+
+.boost-button:active{
+    opacity: 0.7;
 }

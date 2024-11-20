@@ -8,24 +8,22 @@ namespace CSharpClicker.Web.Initializers
     {
         public static void AddAppDbContext(IServiceCollection services)
         {
+            var pathToDbFile = GetPathToDbFile();
             services
-               .AddDbContext<AppDbContext>(options =>
-               options.UseSqlite($"Data Source = {GetPathToDbFile()}"));
-
-            //using var serviceProvider = services.BuildServiceProvider();
-            //var dbContext = serviceProvider.GetRequiredService<AppDbContext>();
-
-            var path = GetPathToDbFile();
+                .AddDbContext<AppDbContext>(options => options
+                    .UseSqlite($"Data Source={pathToDbFile}"));
 
             string GetPathToDbFile()
             {
-                var applicationFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CSharpClicker");
+                var applicationFolder = Path.Combine(Environment.GetFolderPath(
+                    Environment.SpecialFolder.LocalApplicationData), "CSharpClicker");
+
                 if (!Directory.Exists(applicationFolder))
                 {
                     Directory.CreateDirectory(applicationFolder);
                 }
-                var pathToDbFile = Path.Combine(applicationFolder, "CSharpClicker.db");
-                return pathToDbFile;
+
+                return Path.Combine(applicationFolder, "CSharpClicker.db");
             }
         }
 
@@ -38,7 +36,7 @@ namespace CSharpClicker.Web.Initializers
             const string Boost4 = "Маг света";
             const string Boost5 = "Крестьянин с копьём";
 
-            //dbContext.Database.Migrate();
+            dbContext.Database.Migrate();
 
             var existingBoosts = dbContext.Boosts.ToArray();
 

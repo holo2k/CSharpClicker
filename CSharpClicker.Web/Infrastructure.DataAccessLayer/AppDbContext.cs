@@ -1,14 +1,16 @@
 ﻿using CSharpClicker.Web.Domain;
+using CSharpClicker.Web.Infrastructure.Abstractions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using System.Reflection.Emit;
 
 namespace CSharpClicker.Web.Infrastructure.DataAccessLayer
 {
-    public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
+    public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>, IAppDbContext
     {
         public DbSet<ApplicationRole> ApplicationRoles { get; private set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; private set; }
@@ -26,13 +28,13 @@ namespace CSharpClicker.Web.Infrastructure.DataAccessLayer
 
             builder.Entity<UserBoost>()
                 .HasOne(ub => ub.User)
-                .WithMany()
-                .HasForeignKey(p => p.UserId);
+                .WithMany(u => u.UserBoosts)
+                .HasForeignKey(ub => ub.UserId);
 
             builder.Entity<UserBoost>()
                 .HasOne(ub => ub.Boost)
                 .WithMany()
-                .HasForeignKey(p => p.BoostId);
+                .HasForeignKey(ub => ub.BoostId);
 
         }
     }

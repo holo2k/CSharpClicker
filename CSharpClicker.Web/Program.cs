@@ -1,57 +1,58 @@
-using CSharpClicker.Web.Domain;
-
+using CSharpClicker.Web.Infrastructure.Abstractions;
 using CSharpClicker.Web.Infrastructure.DataAccessLayer;
+using CSharpClicker.Web.Infrastructure.Implementations;
 using CSharpClicker.Web.Initializers;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace CSharpClicker.Web;
 
-    public class Program
+public class Program
+{
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+        var builder = WebApplication.CreateBuilder(args);
 
-            //builder.Services.AddScoped<AppDbContext>();
-            ConfigureService(builder.Services);
-            
-            var app = builder.Build();
+        ConfigureServices(builder.Services);
 
-            using var scope = app.Services.CreateScope();
-            using var appDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        var app = builder.Build();
 
-            DbContextInitializer.InitializeDbContext(appDbContext);
-            //app.MapControllers();
+        using var scope = app.Services.CreateScope();
+        using var appDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-            app.UseMvc();
-            app.UseAuthentication();
-            app.UseAuthorization();
+        DbContextInitializer.InitializeDbContext(appDbContext);
 
-            app.UseSwagger();
-            app.UseSwaggerUI();
-            
-            app.MapGet("/", () => "Hello World!");
-            app.MapHealthChecks("health-check");
-           
-            app.Run();
-        }
+        app.UseRouting();
+        app.UseSession();
+        app.UseAuthentication();
+        app.UseAuthorization();
 
-        private static void ConfigureService(IServiceCollection services)
-        {
-            services.AddHealthChecks();
-            
-            services.AddSwaggerGen();
-            services.AddMediatR(o => o.RegisterServicesFromAssembly(typeof(Program).Assembly));
-            services.AddAuthentication();
-            services.AddAuthorization();
-            services.AddMvcCore(o=>o.EnableEndpointRouting = false)
-                    .AddApiExplorer();
-            //services.AddIdentity<ApplicationUser, ApplicationRole>()
-            //    .AddEntityFrameworkStores<AppDbContext>()
-            //    .AddDefaultTokenProviders();
-            IdentityInitializer.AddIdentity(services); 
-            DbContextInitializer.AddAppDbContext(services);
-        }
+        app.UseStaticFiles();
+        app.UseSwagger();
+        app.UseSwaggerUI();
+
+        app.MapControllers();
+        app.MapDefaultControllerRoute();
+        app.MapHealthChecks("health-check");
+
+        app.Run();
     }
 
+    private static void ConfigureServices(IServiceCollection services)
+    {
+        services.AddHealthChecks();
+        services.AddSwaggerGen();
+        services.AddSession();
+        services.AddAutoMapper(typeof(Program).Assembly);
+        services.AddMediatR(o => o.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
+        services.AddAuthentication()
+            .AddCookie(o => o.LoginPath = "/auth/login");
+        services.AddAuthorization();
+        services.AddControllersWithViews();
+
+        services.AddScoped<ICurrentUserAccessor, CurrentUserAccsessor>();
+        services.AddScoped<IAppDbContext, AppDbContext>();
+
+        IdentityInitializer.AddIdentity(services);
+        DbContextInitializer.AddAppDbContext(services);
+    }
+}

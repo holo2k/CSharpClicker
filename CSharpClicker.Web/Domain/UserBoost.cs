@@ -8,6 +8,6 @@
         public Boost Boost { get; set; }
         public int BoostId { get; set; }
         public long CurrentPrice { get; set; }
-        public int Quantity { get; set; }
+        public int Quantity { get; set; } = 1;
     }
 }
