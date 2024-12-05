@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSharpClicker.Web.UseCases.GetBoosts
 {
-    public class GetBoostsQueryHandler : IRequestHandler<GetUserQuery, IReadOnlyCollection<BoostDto>>
+    public class GetBoostsQueryHandler : IRequestHandler<GetBoostsQuery, IReadOnlyCollection<BoostDto>>
     {
         private IAppDbContext appDbContext;
         private IMapper mapper;
@@ -20,7 +20,7 @@ namespace CSharpClicker.Web.UseCases.GetBoosts
             this.mapper = mapper;
         }
 
-        public async Task<IReadOnlyCollection<BoostDto>> Handle(GetUserQuery request, CancellationToken cancellationToken)
+        public async Task<IReadOnlyCollection<BoostDto>> Handle(GetBoostsQuery request, CancellationToken cancellationToken)
         {
             return await mapper
                 .ProjectTo<BoostDto>(appDbContext.Boosts)

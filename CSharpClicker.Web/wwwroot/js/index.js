@@ -5,6 +5,8 @@ const currentScoreElement = document.getElementById("current_score");
 const recordScoreElement = document.getElementById("record_score");
 const profitPerClickElement = document.getElementById("profit_per_click");
 const profitPerSecondElement = document.getElementById("profit_per_second");
+const orcImage = document.getElementById("orc-image");
+const orcHealth = 100;
 let currentScore = Number(currentScoreElement.innerText);
 let recordScore = Number(recordScoreElement.innerText);
 let profitPerSecond = Number(profitPerSecondElement.innerText);
@@ -34,6 +36,8 @@ function boostButtonClick(boostButton) {
     }
     buyBoost(boostButton);
 }
+
+
 
 function buyBoost(boostButton) {
     const boostIdElement = boostButton.getElementsByClassName("boost-id")[0];
@@ -108,6 +112,7 @@ function updateUiScore() {
 function addPointsFromClick() {
     currentScore += profitPerClick;
     recordScore += profitPerClick;
+    orcHealth -= profitPerClick;
 
     updateUiScore();
 }
@@ -115,6 +120,7 @@ function addPointsFromClick() {
 function addPointsFromSecond() {
     currentScore += profitPerSecond;
     recordScore += profitPerSecond;
+    orcHealth -= profitPerSecond;
 
     updateUiScore();
 }
@@ -132,6 +138,11 @@ function addPointsToScore() {
 function onAddPointsSuccess(response) {
     seconds = 0;
     clicks = 0;
+
+    if (orcHealth <= 0) {
+        orcHealth = (profitPerClick + profitPerSecond) * 10;
+        orcImage.src = "../person.jpg";
+    }
 
     updateScoreFromApi(response);
 }

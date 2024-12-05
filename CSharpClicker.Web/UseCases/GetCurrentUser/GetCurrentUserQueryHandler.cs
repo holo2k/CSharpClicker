@@ -27,7 +27,6 @@ namespace CSharpClicker.Web.UseCases.GetBoosts
         public async Task<UserDto> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken)
         {
             var userId = currentUserAccessor.GetCurrentUserId();
-
             var user = await appDbContext.ApplicationUsers
                 .Include(user=> user.UserBoosts)
                 .ThenInclude(ub=>ub.Boost)

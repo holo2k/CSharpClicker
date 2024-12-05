@@ -1,21 +1,29 @@
 ﻿@model IndexViewModel
 
+<body background ="Background.jpg" style = "background-size: cover; background-position: center center; background-repeat: no-repeat;">
+
+@{
+    Layout = "~/Views/Shared/_HatLayout.cshtml";
+}
+
 @section styles {
     <link href="@Url.Content("~/css/index.css")" rel="stylesheet">
 }
 
 <div class="row">
-    <div class="col d-flex flex-column  align-items-center">
-        <div>
+    <div class="col d-flex flex-column align-items-center">
+        <div class="bg-light bg-opacity-50 mt-3 p-3">
             <h3>Добро пожаловать, @Model.User.UserName</h3>
             <h4>У тебя уже накоплено <span id="current_score">@Model.User.CurrentScore</span></h4>
             <h4>Всего ты заработал <span id="record_score">@Model.User.RecordScore</span></h4>
             <h4>С одного удара ты получаешь <span id="profit_per_click">@Model.User.ProfitPerClick</span> монет</h4>
             <h4>Твои подчиненные получают ежесекундно <span id="profit_per_second" @Model.User.ProfitPerSecond</span> монет</h4>
         </div>
+    </div>
+    <div class="col d-flex flex-column align-items-center">
             <button id="clickitem" class="click-item bg-transparent border-0" type="submit" hidden></button>
             <label for="clickitem">
-                <img src="~/ORC_1.png" />
+                <img id="orc-image" src="~/ORC_1.png" />
             </label>
     </div>
     <div class="col-sm-3">
@@ -27,7 +35,7 @@
             var price = userBoost?.Price ?? boost.Price;
             var quantity = userBoost?.Count ?? 0;
 
-            <button width="100px" height="100px" class="boost-button border-0 bg-secondary m-3">
+            <button width="100px" height="100px" class="boost-button border-0 bg-secondary m-3 bg-opacity-50">
                 <span hidden class="boost-id">@boost.Id</span>
                 <h4>@boost.Title</h4>
                 <img width="100" height="100" src="data:image/jpg;base64, @Convert.ToBase64String(boost.Image)"/>
@@ -43,13 +51,10 @@
             </button>
         }
     </div>
-    <form class="col-sm-1" asp-action="Logout" asp-controller="Auth">
-        <input type="submit" class="btn btn-primary" value="Выйти" />
-    </form>
-    </div>
 </div>
 
 @section scripts {
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="~/js/index.js"></script>
 }
+
+</body>

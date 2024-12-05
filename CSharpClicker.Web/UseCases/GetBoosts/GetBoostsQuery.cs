@@ -5,5 +5,5 @@ using System.Security.Claims;
 
 namespace CSharpClicker.Web.UseCases.GetBoosts
 {
-    public record GetUserQuery : IRequest<IReadOnlyCollection<BoostDto>>;
+    public record GetBoostsQuery : IRequest<IReadOnlyCollection<BoostDto>>;
 }

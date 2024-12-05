@@ -36,7 +36,7 @@ namespace CSharpClicker.Web.Initializers
             const string Boost4 = "Маг света";
             const string Boost5 = "Крестьянин с копьём";
 
-            dbContext.Database.Migrate();
+           dbContext.Database.Migrate();
 
             var existingBoosts = dbContext.Boosts.ToArray();
 
@@ -46,7 +46,40 @@ namespace CSharpClicker.Web.Initializers
             AddBoostIfNotExist(Boost4, price: 10000, profit: 400);
             AddBoostIfNotExist(Boost5, price: 100000, profit: 5000, isAuto: true);
 
+            AddRandomUsers();
+
             dbContext.SaveChanges();
+
+            void AddRandomUsers()
+            {
+                return;
+
+                const int limit = 130000534;
+                const int asciLimit = 126;
+                const int symbolsLimit = 15;
+                const int symbolsStart = 5;
+
+                var random = new Random();
+
+                for (var i = 0; i < 200; i++)
+                {
+                    var score = random.Next(limit);
+                    var symbolsCount = random.Next(symbolsStart, symbolsLimit);
+
+                    var userName = string.Empty;
+                    for (var j = 0; j < symbolsCount; j++)
+                    {
+                        var character = random.Next(asciLimit);
+                        userName += char.ConvertFromUtf32(character);
+                    }
+
+                    dbContext.Users.Add(new ApplicationUser
+                    {
+                        UserName = userName,
+                        RecordScore = score,
+                    });
+                }
+            }
 
             void AddBoostIfNotExist(string name, long price, long profit, bool isAuto = false)
             {
