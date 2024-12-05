@@ -16,17 +16,22 @@
             <h3>Добро пожаловать, @Model.User.UserName</h3>
             <h4>У тебя уже накоплено <span id="current_score">@Model.User.CurrentScore</span></h4>
             <h4>Всего ты заработал <span id="record_score">@Model.User.RecordScore</span></h4>
-            <h4>С одного удара ты получаешь <span id="profit_per_click">@Model.User.ProfitPerClick</span> монет</h4>
-            <h4>Твои подчиненные получают ежесекундно <span id="profit_per_second" @Model.User.ProfitPerSecond</span> монет</h4>
+            <h4>Одним ударом ты наносишь <span id="profit_per_click">@Model.User.ProfitPerClick</span> урона</h4>
+            <h4>Твои подчиненные наносят ежесекундно <span id="profit_per_second" @Model.User.ProfitPerSecond</span> урона</h4>
         </div>
-    </div>
-    <div class="col d-flex flex-column align-items-center">
+        </div>
+        <div class="col d-flex flex-column align-items-center">
+            <div class="health-bar-container">
+                <div id="orc-health-bar" class="health-bar">
+                    <span id="health-bar-text" class="health-bar-text">100 / 100</span>
+                </div>
+            </div>
             <button id="clickitem" class="click-item bg-transparent border-0" type="submit" hidden></button>
             <label for="clickitem">
-                <img id="orc-image" src="~/ORC_1.png" />
+                <img id="orc-image" src="~/ORC_1.png" width="800px"/>
             </label>
-    </div>
-    <div class="col-sm-3">
+        </div>
+        <div class="col-sm-3">
         <h3>Бусты</h3>
         @foreach (var boost in Model.Boosts)
         {

@@ -1,3 +1,32 @@
 ﻿﻿.click-item:active, .boost-button:active {
     opacity: 0.7;
 }
+
+.health-bar-container {
+    width: 300px; /* Фиксированная ширина */
+    height: 30px;
+    background-color: #ccc;
+    border: 2px solid #000;
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.health-bar {
+    height: 100%; /* Зависимость от высоты контейнера */
+    width: 100%; /* Полоска занимает всю ширину контейнера */
+    background-color: #4caf50;
+    border-radius: 5px 0 0 5px;
+    transition: width 0.3s ease-in-out;
+    color:white;
+}
+
+.health-bar-text {
+    position: absolute;
+    width: 100%; /* Растягиваем по всей ширине */
+    text-align: center;
+    z-index: 1; /* Убедимся, что текст всегда сверху */
+}
+
+

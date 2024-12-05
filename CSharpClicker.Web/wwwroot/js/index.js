@@ -1,21 +1,35 @@
 const threshold = 10;
+let maxHealth = 100;
 let seconds = 0;
 let clicks = 0;
+const hitSound = new Audio('../hit.mp3');
 const currentScoreElement = document.getElementById("current_score");
 const recordScoreElement = document.getElementById("record_score");
 const profitPerClickElement = document.getElementById("profit_per_click");
 const profitPerSecondElement = document.getElementById("profit_per_second");
 const orcImage = document.getElementById("orc-image");
-const orcHealth = 100;
-let currentScore = Number(currentScoreElement.innerText);
-let recordScore = Number(recordScoreElement.innerText);
-let profitPerSecond = Number(profitPerSecondElement.innerText);
-let profitPerClick = Number(profitPerClickElement.innerText);
+const orcHealthBar = document.getElementById("orc-health-bar");
+const healthBarText = document.getElementById("health-bar-text");
+let orcHealth = Number(100);
+let currentScore = parseInt(currentScoreElement.innerText.trim()) || 0;
+let recordScore = parseInt(recordScoreElement.innerText.trim()) || 0;
+let profitPerSecond = parseInt(profitPerSecondElement.innerText.trim()) || 0;
+let profitPerClick = parseInt(profitPerClickElement.innerText.trim()) || 0;
+const orcImages = [
+    "../ORC_1.png",
+    "../ORC_2.png",
+    "../ORC_3.png",
+    "../ORC_4.png",
+    "../GREMLIN.png",
+    "../DRAGON.png",
+    "../SCELETON.png"
+];
+
 
 
 $(document).ready(function () {
     const clickitem = document.getElementById("clickitem");
-
+    hitSound.volume = 0.2;
     clickitem.onclick = click;
     setInterval(addSecond, 1000)
 
@@ -81,7 +95,7 @@ function addSecond() {
 
 function click() {
     clicks++;
-
+    playHitSound();
     if (clicks >= threshold) {
         addPointsToScore();
     }
@@ -89,6 +103,11 @@ function click() {
     if (clicks > 0) {
         addPointsFromClick();
     }
+}
+
+function playHitSound() {
+    hitSound.currentTime = 0; 
+    hitSound.play();
 }
 
 function updateScoreFromApi(scoreData) {
@@ -106,8 +125,32 @@ function updateUiScore() {
     profitPerClickElement.innerText = profitPerClick;
     profitPerSecondElement.innerText = profitPerSecond;
 
+    if (orcHealth <= 0) {
+        orcHealth = (profitPerClick + profitPerSecond) * 10;
+        maxHealth = (profitPerClick + profitPerSecond) * 10;
+        orcImage.src = getRandomImage(orcImages);
+    }
+
+    const healthPercentage = Math.max(0, (orcHealth / maxHealth) * 100);
+    orcHealthBar.style.width = `${healthPercentage}%`;
+    healthBarText.textContent = `${orcHealth} / ${maxHealth}`;
+
+    if (healthPercentage > 50) {
+        orcHealthBar.style.backgroundColor = "#4caf50"; // Зелёный
+    } else if (healthPercentage > 20) {
+        orcHealthBar.style.backgroundColor = "#ffc107"; // Жёлтый
+    } else {
+        orcHealthBar.style.backgroundColor = "#f44336"; // Красный
+    }
+
     toggleBoostsAvailability();
 }
+
+function getRandomImage(images) {
+    const randomIndex = Math.floor(Math.random() * images.length);
+    return images[randomIndex];
+}
+
 
 function addPointsFromClick() {
     currentScore += profitPerClick;
@@ -138,11 +181,6 @@ function addPointsToScore() {
 function onAddPointsSuccess(response) {
     seconds = 0;
     clicks = 0;
-
-    if (orcHealth <= 0) {
-        orcHealth = (profitPerClick + profitPerSecond) * 10;
-        orcImage.src = "../person.jpg";
-    }
 
     updateScoreFromApi(response);
 }
