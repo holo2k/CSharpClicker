@@ -35,13 +35,15 @@ $(document).ready(function () {
 
     const boostButtons = document.getElementsByClassName("boost-button");
 
+    toggleBoostsAvailability();
+
     for (let i = 0; i < boostButtons.length; i++) {
         const boostButton = boostButtons[i];
 
         boostButton.onclick = () => boostButtonClick(boostButton);
     }
 
-    toggleBoostsAvailability();
+    
 })
 
 function boostButtonClick(boostButton) {

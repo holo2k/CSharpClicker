@@ -2,6 +2,7 @@
 using CSharpClicker.Web.Domain;
 using CSharpClicker.Web.Infrastructure.Abstractions;
 using MediatR;
+using Microsoft.AspNetCore.Connections.Features;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSharpClicker.Web.UseCases.GetLeaderboard;
@@ -19,7 +20,7 @@ public class GetLeaderboardQueryHandler : IRequestHandler<GetLeaderboardQuery, L
 
     public async Task<LeaderboardDto> Handle(GetLeaderboardQuery request, CancellationToken cancellationToken)
     {
-        var offset = request.Page - 1 * DomainConstants.PageSize;
+        var offset = (request.Page - 1) * DomainConstants.PageSize;
 
         var usersByRecordScore = await mapper.ProjectTo<LeaderboardUserDto>(appDbContext
             .ApplicationUsers

@@ -2,6 +2,9 @@ using CSharpClicker.Web.Infrastructure.Abstractions;
 using CSharpClicker.Web.Infrastructure.DataAccessLayer;
 using CSharpClicker.Web.Infrastructure.Implementations;
 using CSharpClicker.Web.Initializers;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 
 namespace CSharpClicker.Web;
 
@@ -21,18 +24,20 @@ public class Program
         DbContextInitializer.InitializeDbContext(appDbContext);
 
         app.UseRouting();
-        app.UseSession();
         app.UseAuthentication();
         app.UseAuthorization();
 
         app.UseStaticFiles();
         app.UseSwagger();
         app.UseSwaggerUI();
-
+        app.Use(async (context, next) =>
+        {
+            Console.WriteLine($"Request: {context.Request.Path}");
+            await next();
+        });
         app.MapControllers();
         app.MapDefaultControllerRoute();
         app.MapHealthChecks("health-check");
-
         app.Run();
     }
 
@@ -40,14 +45,12 @@ public class Program
     {
         services.AddHealthChecks();
         services.AddSwaggerGen();
-        services.AddSession();
         services.AddAutoMapper(typeof(Program).Assembly);
         services.AddMediatR(o => o.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
-        services.AddAuthentication()
-            .AddCookie(o => o.LoginPath = "/auth/login");
-        services.AddAuthorization();
         services.AddControllersWithViews();
+        services.AddAuthentication();
+        services.AddAuthorization();
 
         services.AddScoped<ICurrentUserAccessor, CurrentUserAccsessor>();
         services.AddScoped<IAppDbContext, AppDbContext>();

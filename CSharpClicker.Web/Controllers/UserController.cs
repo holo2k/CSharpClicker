@@ -1,4 +1,5 @@
-﻿using CSharpClicker.Web.UseCases.GetLeaderboard;
+﻿using CSharpClicker.Web.UseCases.ChangeUserName;
+using CSharpClicker.Web.UseCases.GetLeaderboard;
 using CSharpClicker.Web.UseCases.GetUserSettings;
 using CSharpClicker.Web.UseCases.SetUserAvatar;
 using MediatR;
@@ -18,12 +19,20 @@ namespace CSharpClicker.Web.Controllers
             this.mediator = mediator;
         }
 
+        [HttpPost("username")]
+        public async Task<IActionResult> SetAvatar(ChangeUserNameCommand command)
+        {
+            await mediator.Send(command);
+
+            return RedirectToAction("Settings", "User");
+        }
+
         [HttpPost("avatar")]
         public async Task<IActionResult> SetAvatar(SetUserAvatarCommand command)
         {
             await mediator.Send(command);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Settings", "User");
         }
 
         [HttpGet("leaderboard")]

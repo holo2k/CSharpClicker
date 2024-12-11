@@ -6,22 +6,36 @@
     Layout = "~/Views/Shared/_HatLayout.cshtml";
 }
 
-<div>
-    @if (Model.Avatar.Length == 0)
-    {
-        <img src="~/person.jpg" height="100" />
-    }
-    else
-    {
-        <img src="data:image/png;base64, @Convert.ToBase64String(Model.Avatar)" height="100" width="100" />
-    }
+<body background="Background.jpg" style="background-size:cover; background-position: center center; background-repeat:no-repeat; height:840px">
+<div class="mx-auto bg-secondary bg-opacity-50" style="width:300px">
+    
+    <form asp-action="username" asp-controller="user" method="post">
+            <div class="d-flex flex-wrap w-100" style="text-align:center;">
+             <p id="data-username" style="margin: auto" class="text-white fs-3 fw-bold">@Model.UserName</p>
+             <input id="name-change-input" type="text" class="form-control mt-3 mb-3 text-white" style="margin: auto" name="name" hidden />
+                <button id="btn-name-change" class="click-item bg-secondary bg-opacity-50 border-0 text-white" style="margin: auto">Изменить имя</button>
+        </div>
+    </form>
+    <div class="d-flex flex-wrap w-100" style="text-align:center;" >
+       @if (Model.Avatar.Length == 0)
+       {
+                <img src="~/person.jpg" height="200" style="margin: auto" />
+       }
+       else
+       {
+                <img src="data:image/png;base64, @Convert.ToBase64String(Model.Avatar)" height="200" width="200" style="margin: auto" />
+       }
+    </div>
+
     <form asp-action="avatar" asp-controller="user" method="post" enctype="multipart/form-data">
-        <label for="avatar-form-control">Изменить аватар</label>
-        <input id="avatar-form-control" type="file" class="form-control mt-3 mb-3" name="avatar" accept="image/*" />
-        <input id="update-avatar-submit" type="submit" class="btn btn-primary" value="Обновить аватар" hidden />
+            <div class="d-flex flex-wrap w-100" style="text-align:center;">
+           <label for="avatar-form-control" class="click-item bg-secondary bg-opacity-50 text-white" style="margin: auto"> Изменить аватар</label>
+           <input id="avatar-form-control" type="file" class="form-control mt-3 mb-3" name="avatar" accept="image/*" onchange="form.submit()" style="margin: auto" hidden />
+         </div>
     </form>
 </div>
 
 @section scripts {
     <script src="~/js/settings.js"></script>
 }
+</body>

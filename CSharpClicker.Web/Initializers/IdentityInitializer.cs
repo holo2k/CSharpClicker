@@ -12,6 +12,11 @@ namespace CSharpClicker.Web.Initializers
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
             services.Configure<IdentityOptions>(o => o.Password.RequireNonAlphanumeric = false);
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/auth/login"; 
+            });
         }
     }
 }

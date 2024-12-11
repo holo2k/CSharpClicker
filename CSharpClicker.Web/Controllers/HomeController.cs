@@ -3,11 +3,13 @@ using CSharpClicker.Web.UseCases.Common;
 using CSharpClicker.Web.UseCases.GetBoosts;
 using CSharpClicker.Web.ViewModels;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CSharpClicker.Web.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IMediator mediator;
