@@ -1,5 +1,6 @@
 ﻿using CSharpClicker.Web.UseCases.ChangeUserName;
 using CSharpClicker.Web.UseCases.GetLeaderboard;
+using CSharpClicker.Web.UseCases.GetUserProfile;
 using CSharpClicker.Web.UseCases.GetUserSettings;
 using CSharpClicker.Web.UseCases.SetUserAvatar;
 using MediatR;
@@ -49,5 +50,14 @@ namespace CSharpClicker.Web.Controllers
 
             return View(userSettings);
         }
+
+        [HttpPost("profile/{id}")]
+        public async Task<IActionResult> Profile(Guid id)
+        {
+            var userProfile = await mediator.Send(new GetUserProfileQuery(id));
+
+            return View("~/Views/User/Profile.cshtml", userProfile);
+        }
+
     }
 }

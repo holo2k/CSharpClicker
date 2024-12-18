@@ -6,5 +6,7 @@ public class LeaderboardUserDto
 
     public long RecordScore { get; init; }
 
+    public Guid Id { get; init; }
+
     public byte[] Avatar { get; init; } = [];
 }

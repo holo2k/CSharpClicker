@@ -1,0 +1,35 @@
+﻿@using CSharpClicker.Web.UseCases.GetBoosts
+﻿@using CSharpClicker.Web.UseCases.GetUserSettings
+
+@model UserDto;
+
+@{
+    Layout = "~/Views/Shared/_HatLayout.cshtml";
+}
+
+<body background="../../Background.jpg" style="background-size:cover; background-position: center center; background-repeat:no-repeat; height:840px">
+ <div class="mx-auto bg-secondary bg-opacity-50" style="width:300px">
+
+    <div class="mx-auto bg-secondary bg-opacity-50" style="width:300px">
+
+            <div class="d-flex flex-wrap w-100" style="text-align:center;">
+                <p id="data-username" style="margin: auto" class="text-white fs-3 fw-bold">@Model.UserName</p>
+                <input id="name-change-input" type="text" class="form-control mt-3 mb-3 text-white" style="margin: auto" name="name" hidden />
+            </div>
+        <div class="d-flex flex-wrap w-100" style="text-align:center;">
+            @if (Model.Avatar.Length == 0)
+            {
+                <img src="~/person.jpg" height="200" style="margin: auto" />
+            }
+            else
+            {
+                <img src="data:image/png;base64, @Convert.ToBase64String(Model.Avatar)" height="200" width="200" style="margin: auto" />
+            }
+        </div>
+        <p style="margin: auto" class="text-white fs-3 fw-bold">Текущие очки: @Model.CurrentScore</p>
+        <p style="margin: auto" class="text-white fs-3 fw-bold">Рекордные очки: @Model.RecordScore</p>
+        <p style="margin: auto" class="text-white fs-3 fw-bold">Профит в секунду: @Model.ProfitPerSecond</p>
+        <p style="margin: auto" class="text-white fs-3 fw-bold">Профит за клик: @Model.ProfitPerClick</p>
+    </div>
+  <div>
+</body>
